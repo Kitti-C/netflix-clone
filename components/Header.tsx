@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { SearchIcon, BellIcon } from '@heroicons/react/Outline'
 import Link from 'next/link'
-
+import { SearchIcon, BellIcon } from '@heroicons/react/solid'
 function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
 
@@ -41,9 +40,10 @@ function Header() {
       </div>
 
       <div className="flex items-center space-x-4 text-sm font-light">
-        <SearchIcon className="hidden sm:inline h-6 w-6" />
+        <BellIcon className="cursor-pointer h-8 w-8 hover:opacity-70 transition" />
+
         <p className="hidden lg:inline ">Kids</p>
-        <BellIcon className="h-6 w-6" />
+
         <Link href="">
           <img
             src="https://rb.gy/g1pwyx"
@@ -51,6 +51,7 @@ function Header() {
             className="cursor-pointer rounded"
           />
         </Link>
+        <SearchIcon className="hidden md:inline cursor-pointer h-8 w-8 hover:opacity-70 transition" />
       </div>
     </header>
   )
