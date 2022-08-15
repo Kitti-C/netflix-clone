@@ -1,5 +1,6 @@
 import Banner from '@/components/Banner'
 import Header from '@/components/Header'
+import Movies from '@/components/Movies'
 import { Movie } from '@/types/movie'
 import { tmdbReqs } from '@/utils/requests'
 import Head from 'next/head'
@@ -24,7 +25,6 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
-  console.log(netflixOriginals)
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh] ">
       <Head>
@@ -32,10 +32,17 @@ const Home = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="relative pl-4 pb-24 lg:space-y-24 ">
+      <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
         <Banner netflixOriginals={netflixOriginals} />
-
-        <section></section>
+        <section className="md:space-y-24">
+          <Movies title="Trending Now" movies={trendingNow} />
+          <Movies title="Top Rated" movies={topRated} />
+          <Movies title="Action Movies" movies={actionMovies} />
+          <Movies title="Comedy Movies" movies={comedyMovies} />
+          <Movies title="Horror Movies" movies={horrorMovies} />
+          <Movies title="Romance Movies" movies={romanceMovies} />
+          <Movies title="Documentaries" movies={documentaries} />
+        </section>
       </main>
     </div>
   )
