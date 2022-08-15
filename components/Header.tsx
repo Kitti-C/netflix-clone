@@ -40,6 +40,8 @@ function Header() {
       </div>
 
       <div className="flex items-center space-x-4 text-sm font-light">
+        <SearchIcon className="hidden md:inline cursor-pointer h-8 w-8 hover:opacity-70 transition" />
+
         <BellIcon className="cursor-pointer h-8 w-8 hover:opacity-70 transition" />
 
         <p className="hidden lg:inline ">Kids</p>
@@ -51,7 +53,6 @@ function Header() {
             className="cursor-pointer rounded"
           />
         </Link>
-        <SearchIcon className="hidden md:inline cursor-pointer h-8 w-8 hover:opacity-70 transition" />
       </div>
     </header>
   )
