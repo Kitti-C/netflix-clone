@@ -10,3 +10,4 @@ yarn add tailwindcss-textshadow --dev
 yarn add tailwind-scrollbar-hide
 
 npm install firebase
+npm install react-hook-form
