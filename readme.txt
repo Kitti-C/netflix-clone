@@ -12,3 +12,5 @@ yarn add tailwind-scrollbar-hide
 yarn add react-svg-spinners
 yarn add firebase
 yarn add react-hook-form
+yarn add recoil
+yarn add react-player

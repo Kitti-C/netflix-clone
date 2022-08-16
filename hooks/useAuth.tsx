@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (email: string, password: string) => {
     setLoading(true)
-    console.log(auth)
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
@@ -96,7 +95,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(true)
         alert(error.message)
       })
-    //.finally(() => setLoading(false))
+      .finally(() => setLoading(false))
   }
 
   const logout = async () => {
