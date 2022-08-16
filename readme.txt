@@ -9,5 +9,6 @@ yarn add react-icons
 yarn add tailwindcss-textshadow --dev
 yarn add tailwind-scrollbar-hide
 
-npm install firebase
-npm install react-hook-form
+yarn add react-svg-spinners
+yarn add firebase
+yarn add react-hook-form

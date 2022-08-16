@@ -1,4 +1,3 @@
-import { async } from '@firebase/util'
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -6,6 +5,7 @@ import {
   signOut,
   User,
 } from 'firebase/auth'
+
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { auth } from '../firebase'
@@ -33,27 +33,38 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [loading, setLoading] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const [initialLoading, setInitialLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null)
+  const [error, setError] = useState(null)
+  const [initialLoading, setInitialLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(false)
 
-  // Persisting user
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user)
-        setLoading(false)
-      } else {
-        setUser(null)
-        setLoading(false)
-        router.push('/login')
-      }
+  useEffect(
+    () =>
+      onAuthStateChanged(auth, (user) => {
+        setLoading(true)
 
-      setInitialLoading(false)
-    })
-  }, [auth])
+        setTimeout(() => {
+          if (user) {
+            // Logged in...
+            if (router.pathname === '/login') {
+              router.push('/')
+            }
+            setUser(user)
+            setLoading(false)
+          } else {
+            // Not logged in...
+            setUser(null)
+            setLoading(true)
+            router.push('/login')
+          }
+
+          setInitialLoading(false)
+        }, 100)
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [auth]
+  )
 
   const signUp = async (email: string, password: string) => {
     setLoading(true)
@@ -64,21 +75,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         router.push('/')
         setLoading(false)
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        setError(error.message)
+        alert(error.message)
+        setLoading(false)
+      })
       .finally(() => setLoading(false))
   }
 
   const signIn = async (email: string, password: string) => {
     setLoading(true)
-
+    console.log(auth)
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
         router.push('/')
         setLoading(false)
       })
-      .catch((error) => alert(error.message))
-      .finally(() => setLoading(false))
+      .catch((error) => {
+        setLoading(true)
+        alert(error.message)
+      })
+    //.finally(() => setLoading(false))
   }
 
   const logout = async () => {
@@ -89,19 +107,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(null)
       })
       .catch((error) => alert(error.message))
-      .finally(() => setLoading(false))
+      .finally(() => setLoading(true))
   }
 
   const memoedValue = useMemo(
-    () => ({
-      user,
-      signUp,
-      signIn,
-      logout,
-      error,
-      loading,
-    }),
-    [user, loading]
+    () => ({ user, signUp, signIn, error, loading, logout }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user, loading, error]
   )
 
   return (
@@ -111,6 +123,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   )
 }
 
+// Let's only export the `useAuth` hook instead of the context.
+// We only want to use the hook directly and never the context comopnent.
 export default function useAuth() {
   return useContext(AuthContext)
 }

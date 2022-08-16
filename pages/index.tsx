@@ -1,9 +1,11 @@
 import Banner from '@/components/Banner'
 import Header from '@/components/Header'
 import Movies from '@/components/Movies'
+import useAuth from '@/hooks/useAuth'
 import { Movie } from '@/types/movie'
 import { tmdbReqs } from '@/utils/requests'
 import Head from 'next/head'
+import { OneEightyRing } from 'react-svg-spinners'
 
 interface Props {
   netflixOriginals: Movie[]
@@ -25,6 +27,28 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
+  const { logout, loading } = useAuth()
+
+  const loadingUI = () => {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <header>
+          <title>Loading...</title>
+        </header>
+
+        <main className="flex text-white bg-gradient-to-t from-gray-700 via-gray-900 to-black space-x-2 w-screen h-screen justify-center items-center   ">
+          <span>
+            <OneEightyRing color="white" />
+          </span>
+          <h1 className="font-medium">Loading...</h1>
+        </main>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return loadingUI()
+  }
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] ">
       <Head>
