@@ -64,7 +64,7 @@ function Modal() {
       //   onClick={handleClose}
     >
       <>
-        <div className="fixed  top-4 md:top-16 left-0 right-0   mx-auto w-full h-full max-w-[880px] overflow-hidden  rounded-md ">
+        <div className="fixed  top-2 md:top-16 left-0 right-0   mx-auto w-full h-full max-w-[880px] overflow-hidden  rounded-md ">
           <button
             className="modal-btn absolute right-5 top-5 !z-40 border-none bg-[#181818]"
             onClick={handleClose}
@@ -100,7 +100,8 @@ function Modal() {
               <div className="space-y-6 text-sm md:text-lg">
                 <div className="flex space-x-4 items-center text-sm">
                   <p className="font-semibold text-green-400">
-                    {movie?.vote_average * 10}% Match
+                    {(movie?.vote_average * 10).toString().substring(0, 2)}%
+                    Match
                   </p>
                   <p className="font-light">
                     {movie?.release_date || movie?.first_air_date}
