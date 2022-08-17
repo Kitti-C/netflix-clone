@@ -10,13 +10,14 @@ import {
 } from '@heroicons/react/outline'
 import { Genre, Movie, Element } from '@/types/movie'
 import ReactPlayer from 'react-player'
-import { FaPlay } from 'react-icons/fa'
+import { FaPlay, FaStop } from 'react-icons/fa'
 function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
   const movie = useRecoilValue(movieState)
   const [trailer, setTrailer] = useState('')
   const [genres, setGenres] = useState<Genre[]>([])
   const [muted, setMuted] = useState<boolean>(false)
+  const [playing, setPlaying] = useState<boolean>(false)
 
   useEffect(() => {
     if (!movie) return
@@ -71,34 +72,32 @@ function Modal() {
             <XIcon className="h-6 w-6" />
           </button>
           <div className="relative  w-full h-full ">
-            <ReactPlayer
-              url={`https://www.youtube.com/watch?v=${trailer}`}
-              width="100%"
-              height="55%"
-              style={{ position: 'relative', top: '0', left: '0' }}
-              playing={false}
-              muted={muted}
-            />
-            <div className="absolute bottom-[440px] flex w-full items-center justify-between px-10">
-              <div className="flex space-x-3">
-                <button className=" flex items-center justify-center  gap-x-2 bg-white rounded text-xl font-bold text-black px-6 py-1.5 transition hover:bg-[#e6e6e6]">
-                  <FaPlay className="text-black h-7 w-7" />
-                  Play
-                </button>
-                <button className="modal-btn">
-                  <PlusIcon className="h-7 w-7" />
-                </button>
-                <button className="modal-btn">
-                  <ThumbUpIcon className="h-7 w-7" />
+            <div className="relative flex h-96">
+              <ReactPlayer
+                url={`https://www.youtube.com/watch?v=${trailer}`}
+                width="100%"
+                height="100%"
+                style={{ position: 'relative', top: '0', left: '0' }}
+                playing={playing}
+                muted={muted}
+              />
+              <div className="absolute bottom-4  flex w-full items-center justify-between px-10">
+                <div className="flex space-x-3">
+                  <button className="modal-btn">
+                    <PlusIcon className="h-7 w-7" />
+                  </button>
+                  <button className="modal-btn">
+                    <ThumbUpIcon className="h-7 w-7" />
+                  </button>
+                </div>
+                <button onClick={() => setMuted(!muted)} className="modal-btn">
+                  {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </button>
               </div>
-              <button onClick={() => setMuted(!muted)} className="modal-btn">
-                {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-              </button>
             </div>
 
             <div className="flex px-10 py-8 space-x-16 rounded-b-md bg-[#181818]">
-              <div className="space-y-6 text-lg">
+              <div className="space-y-6 text-sm md:text-lg">
                 <div className="flex space-x-4 items-center text-sm">
                   <p className="font-semibold text-green-400">
                     {movie?.vote_average * 10}% Match
